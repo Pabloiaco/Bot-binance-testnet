@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Trading Bot Dashboard</title>
+    <style>
+        body { font-family: Arial; margin: 40px; background-color: #121212; color: #e0e0e0; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #333; padding: 8px; text-align: center; }
+        th { background-color: #1f1f1f; }
+        h1 { color: #00ffcc; }
+    </style>
+</head>
+<body>
+    <h1>Estado del Bot de Trading</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Hora</th>
+                <th>Tipo</th>
+                <th>Precio</th>
+                <th>Resultado</th>
+            </tr>
+        </thead>
+        <tbody id="log-table">
+        </tbody>
+    </table>
+    <script>
+        async function fetchData() {
+            const response = await fetch('/data');
+            const data = await response.json();
+            const table = document.getElementById('log-table');
+            table.innerHTML = '';
+            data.reverse().forEach(row => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${row.time}</td><td>${row.type}</td><td>${row.price}</td><td>${row.result}</td>`;
+                table.appendChild(tr);
+            });
+        }
+        fetchData();
+        setInterval(fetchData, 5000);
+    </script>
+</body>
+</html>
